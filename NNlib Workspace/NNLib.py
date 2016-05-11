@@ -5,6 +5,7 @@ import math
 import os.path
 from random import random
 import pickle
+from time import time
 
 
 class Network:
@@ -153,3 +154,14 @@ class Neuron:
 
     def add(self, a):
         self.sum += a
+
+av=0
+ts = 0
+for i in range(1000):
+    st= time()
+    Net = Network(sizes=[10, 100, 100, 10])
+    ts = ((ts*i)+sum(Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1]))/10.0)/(i+1)
+    tt = time()-st
+    av = ((av*i)+tt)/float(i+1)
+print ts
+print av
