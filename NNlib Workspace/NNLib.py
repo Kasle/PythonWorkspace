@@ -155,14 +155,14 @@ class Neuron:
     def add(self, a):
         self.sum += a
 
-av=0
+av=[]
 ts = 0
-for i in range(1000):
-    Net = Network(sizes=[10, 100, 10])
+for i in range(1):
+    Net = Network(sizes=[500, 500, 500, 500])
     st= time()
-    out = Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1])
+    out = Net.forward([1]*500)
     tt = time()-st
-    ts = ((ts*i)+sum(out)/10.0)/(i+1)
-    av = ((av*i)+tt)/float(i+1)
+    ts = ((ts*i)+sum(out)/500.0)/float(i+1)
+    av +=[tt]
 print ts
-print "Time:",av*(1000),"ms"
+print "Time:",1000*sum(av)/len(av),"ms"

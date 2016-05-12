@@ -8,8 +8,8 @@ from time import time
 import numpy
 import math
 
-class NNetwork:
-    def __init__(self, ID="DEFAULT", shape=[10, 50, 10], bias = 1):
+class Network:
+    def __init__(self, ID="DEFAULT", shape=[10, 10, 10], bias = 1):
         self.NodeNet = []
         self.PathNet = []
         self.ID = ID
@@ -28,11 +28,18 @@ class NNetwork:
         print "Loading newtork " + self.ID + "." 
         
     def forward(self, inValues):
+        self.clear()
         for i in range(len(self.NodeNet[0][0:-1])):
             self.NodeNet[0][i].add(inValues[i])
         for i in self.PathNet:
-            self.NodeNet[i.endIndex[0]][i.endIndex[1]].add(self.NodeNet[i.startIndex[0]][i.startIndex[1]].output()[1]*i.weight)
+            self.NodeNet[i.endIndex[0]][i.endIndex[1]].add(self.NodeNet[i.startIndex[0]][i.startIndex[1]].output()[1]*i.weight)   
         return [i.output()[1] for i in (self.NodeNet[-1])]
+    
+    def addPath(self, sIndex, eIndex):
+        for i in range(len(self.PathNet)):
+            if sIndex[0] == self.PathNet[i].startIndex[0]:
+                self.PathNet.insert(i, Path(sIndex, eIndex))
+                break
         
 
     def makeNet(self):
@@ -61,10 +68,12 @@ class Path:
         self.weight = (numpy.random.random()*2)-1
         self.startIndex = startIndex
         self.endIndex = endIndex
-        #print self.startIndex,"--",self.weight,"-->",self.endIndex
+    def pathInfo(self):
+        return str(self.startIndex) + " --" + str(self.weight) + "--> " + str(self.endIndex)
 
 class Node:
     def __init__(self, isBias = False):
+        self.sumSigged = False
         self.sum = [0, 0]       
         self.delta = 0
         self.isBias = isBias
@@ -76,21 +85,24 @@ class Node:
             pass
         
     def output(self):
-        if self.sum[1]==0:
+        if not self.sumSigged:
             self.sigF()
+            self.sumSigged = True
         return self.sum
         
     def add(self, a):
         self.sum[0]+=a
+        if self.sumSigged:
+            self.sumSigged = False
 
-av=0
+av=[]
 ts = 0
-for i in range(1000):
-    Net = NNetwork(shape=[10, 100, 10])
+for i in range(1):
+    Net = Network(shape=[500, 500, 500, 500])
     st= time()
-    out = Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1])
+    out = Net.forward([1]*500)
     tt = time()-st
-    ts = ((ts*i)+sum(out)/10.0)/(i+1)
-    av = ((av*i)+tt)/float(i+1)
+    ts = ((ts*i)+sum(out)/500)/float(i+1)
+    av +=[tt]
 print ts
-print "Time:",av*(1000),"ms"
+print "Time:",1000*sum(av)/len(av),"ms"
