@@ -5,8 +5,6 @@
 #==============================================================================
 
 from time import time
-from time import sleep
-import random
 import numpy
 import math
 
@@ -33,9 +31,9 @@ class NNetwork:
         for i in range(len(self.NodeNet[0][0:-1])):
             self.NodeNet[0][i].add(inValues[i])
         for i in self.PathNet:
-            self.NodeNet[i.endIndex[0]][i.endIndex[1]].add(self.NodeNet[i.startIndex[0]][i.startIndex[1]].outSigF()[1]*i.weight)
+            self.NodeNet[i.endIndex[0]][i.endIndex[1]].add(self.NodeNet[i.startIndex[0]][i.startIndex[1]].output()[1]*i.weight)
+        return [i.output()[1] for i in (self.NodeNet[-1])]
         
-        return [i.outSigF()[1] for i in (self.NodeNet[-1])]
 
     def makeNet(self):
         for i in self.shape:
@@ -49,6 +47,14 @@ class NNetwork:
                 for k in range(len(self.NodeNet[i+1])-1):
                     self.PathNet.append(Path([i,j],[i+1,k]))
         self.NodeNet[-1].pop()
+        
+    def clear(self):
+        for i in self.NodeNet:
+            for j in i:
+                if not j.isBias:
+                    j.sum = [0, 0]
+                else:
+                    j.sum = [self.biasValue, 0]
 
 class Path:
     def __init__(self, startIndex, endIndex):
@@ -63,23 +69,28 @@ class Node:
         self.delta = 0
         self.isBias = isBias
 
-    def outSigF(self):
+    def sigF(self):
         try:
             self.sum[1] = 1.0 / (1.0 + math.exp(-self.sum[0]))
         except:
             pass
+        
+    def output(self):
+        if self.sum[1]==0:
+            self.sigF()
         return self.sum
-
+        
     def add(self, a):
         self.sum[0]+=a
 
 av=0
 ts = 0
 for i in range(1000):
+    Net = NNetwork(shape=[10, 100, 10])
     st= time()
-    Net = NNetwork(shape=[10, 100, 100, 10])
-    ts = ((ts*i)+sum(Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1]))/10.0)/(i+1)
+    out = Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1])
     tt = time()-st
+    ts = ((ts*i)+sum(out)/10.0)/(i+1)
     av = ((av*i)+tt)/float(i+1)
 print ts
-print av
+print "Time:",av*(1000),"ms"

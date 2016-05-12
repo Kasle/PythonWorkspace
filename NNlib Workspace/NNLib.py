@@ -158,10 +158,11 @@ class Neuron:
 av=0
 ts = 0
 for i in range(1000):
+    Net = Network(sizes=[10, 100, 10])
     st= time()
-    Net = Network(sizes=[10, 100, 100, 10])
-    ts = ((ts*i)+sum(Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1]))/10.0)/(i+1)
+    out = Net.forward([1,1, 1, 1, 1, 1, 1, 1, 1, 1])
     tt = time()-st
+    ts = ((ts*i)+sum(out)/10.0)/(i+1)
     av = ((av*i)+tt)/float(i+1)
 print ts
-print av
+print "Time:",av*(1000),"ms"
