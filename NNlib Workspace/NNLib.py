@@ -63,6 +63,7 @@ class Network:
             self.Neurons[-1].append(Neuron([1]))
 
     def forward(self, IN, isLearn = False):
+        self.__clean()
         if len(IN) != self.Size[0]:
             print "ERROR: Input size invalid"
             return
@@ -92,8 +93,6 @@ class Network:
             out.append(self.Neurons[-1][i].sum)
         # Return
         # self.printNet()
-        if not isLearn:
-            self.__clean()
         return out
 
     def backprop(self, IN, EOUT, K=0.1):
@@ -155,14 +154,11 @@ class Neuron:
     def add(self, a):
         self.sum += a
 
-av=[]
-ts = 0
-for i in range(1):
-    Net = Network(sizes=[500, 500, 500, 500])
-    st= time()
-    out = Net.forward([1]*500)
-    tt = time()-st
-    ts = ((ts*i)+sum(out)/500.0)/float(i+1)
-    av +=[tt]
-print ts
-print "Time:",1000*sum(av)/len(av),"ms"
+
+Net = Network(sizes=[2, 10, 2])
+print Net.forward([1, 1])
+
+a = time()
+for i in range(1000):
+    Net.backProp([1,1],[0,0])
+print time() - a
