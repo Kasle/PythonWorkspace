@@ -8,6 +8,7 @@ import os
 import pickle
 import numpy
 import math
+import random
 
 class Network:
     def __init__(self, ID="DEFAULT", shape=[1,1,1], bias = 1):
@@ -136,6 +137,7 @@ class Network:
             for j in i:
                 for k in j:
                     print k.pathInfo()
+        
 
 class Path:
     def __init__(self, startIndex, endIndex):
@@ -170,15 +172,26 @@ class Node:
             self.sumSigged = False
 
 ##Example Of Use
-#
-Net = Network(shape=[1, 2, 1])
+#,
+Net = Network(ID = "TEST",shape=[1, 2, 1])
 
 print Net.forward([1])
 print Net.forward([0]),"\n"
+    
+Net.printNet()
+print ""
 
-for i in range(10000):
-    Net.backProp([1],[0],1)
-    Net.backProp([0],[1],1)
+LC = 5
 
-print Net.forward([1])
-print Net.forward([0])
+for i in range(100000):
+    Net.backProp([1],[0],LC)
+    Net.backProp([0],[1],LC)
+    if i%1000 == 0:
+        LC+=1
+        print Net.forward([1]), Net.forward([0])
+
+    Net.save()
+
+
+
+Net.printNet()
