@@ -131,15 +131,17 @@ class Node:
             self.sumSigged = False
 
 ##Example Of Use
-
-##Net = Network(shape=[1, 3, 1])
-##
-##print Net.forward([1])
-##print Net.forward([0]),"\n"
-##
-##for i in range(10000):
-##    Net.backProp([1],[0],3)
-##    Net.backProp([0],[1],3)
-##
-##print Net.forward([1])
-##print Net.forward([0])
+#
+#Net = Network(shape=[1, 3, 1])
+#
+#print Net.forward([1])
+#print Net.forward([0]),"\n"
+#
+#a = time()
+#for i in range(10000):
+#    Net.backProp([1],[0],3)
+#    Net.backProp([0],[1],3)
+#print time()-a,"\n"
+#
+#print Net.forward([1])
+#print Net.forward([0])

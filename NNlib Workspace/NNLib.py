@@ -154,11 +154,16 @@ class Neuron:
     def add(self, a):
         self.sum += a
 
+Net = Network(sizes=[1, 3, 1])
 
-Net = Network(sizes=[2, 10, 2])
-print Net.forward([1, 1])
+print Net.forward([1])
+print Net.forward([0]),"\n"
 
 a = time()
-for i in range(1000):
-    Net.backProp([1,1],[0,0])
-print time() - a
+for i in range(10000):
+    Net.backprop([1],[0],3)
+    Net.backprop([0],[1],3)
+print time()-a
+
+print Net.forward([1])
+print Net.forward([0])
