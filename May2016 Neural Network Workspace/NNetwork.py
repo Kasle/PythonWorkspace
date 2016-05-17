@@ -4,7 +4,8 @@
 #     May 2016
 #==============================================================================
 
-from time import time
+import os
+import pickle
 import numpy
 import math
 
@@ -15,17 +16,51 @@ class Network:
         self.ID = ID
         self.shape = shape
         self.biasValue = bias
-#        if self.ID == "DEFAULT":
-#            print "Creating temporary network."
-#        else:
-#            print "Creating and saving network " + self.ID + "."
-        self.makeNet()
+        if self.ID == "DEFAULT":
+            print "Creating temporary network."
+            self.makeNet()
+        else:
+            if os.path.isfile("data/"+self.ID+".netdata"):
+                try:
+                    self.load()
+                    print "Network \""+self.ID+"\" loaded successfully."
+                except:
+                    print "Loading failed. Creating temporary network."
+                    self.makeNet()
+            else:
+                try:
+                    self.makeNet()
+                    self.save()
+                    print "New network \""+self.ID+"\" saved successfully."
+                except:
+                    print "New network creation failed. Creating temporary network."
+                    self.makeNet()
             
     def save(self):
-        print "Saving network " + self.ID + "."
-        
+        try:
+            if not os.path.isdir("data"):
+                os.makedirs("data")
+            dataWrite = open("data/" + self.ID + ".netdata", "wb")
+            pickle.dump([self.nodeNet, self.pathNet, self.ID, self.shape, self.biasValue], dataWrite, -1)
+            dataWrite.close()
+        except:
+            raise
+
     def load(self):
-        print "Loading newtork " + self.ID + "." 
+        try:
+            if not os.path.exists("data/" + self.ID + ".netdata"):
+                raise
+                return
+            dataRead = open("data/" + self.ID + ".netdata", "rb")
+            inData = pickle.load(dataRead)
+            dataRead.close()
+            self.nodeNet = inData[0]
+            self.pathNet = inData[1]
+            self.ID = inData[2]
+            self.shape = inData[3]
+            self.biasValue = inData[4]
+        except:
+            raise
         
     def forward(self, inValues):
         self.clear()
@@ -62,6 +97,10 @@ class Network:
                     j.sum = [0, 0]
                 else:
                     j.sum = [self.biasValue, 0]
+        for i in self.pathNet:
+            for j in i:
+                for k in j:
+                    k.delta = 0
 
     def backProp(self, expectedInput, expectedOutput, A=1):
         self.forward(expectedInput)
