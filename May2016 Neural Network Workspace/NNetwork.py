@@ -141,7 +141,7 @@ class Network:
 
 class Path:
     def __init__(self, startIndex, endIndex):
-        self.weight = (numpy.random.random()*2)-1
+        self.weight = ((numpy.random.random()*2)-1)
         self.startIndex = startIndex
         self.endIndex = endIndex
         self.delta = 0
@@ -173,25 +173,38 @@ class Node:
 
 ##Example Of Use
 #,
-Net = Network(ID = "TEST",shape=[1, 2, 1])
-
-print Net.forward([1])
-print Net.forward([0]),"\n"
-    
-Net.printNet()
-print ""
-
-LC = 5
-
-for i in range(100000):
-    Net.backProp([1],[0],LC)
-    Net.backProp([0],[1],LC)
-    if i%1000 == 0:
-        LC+=1
-        print Net.forward([1]), Net.forward([0])
-
-    Net.save()
-
-
-
-Net.printNet()
+#Net = Network(ID = "TEST",shape=[1, 2, 1])
+#
+#print Net.forward([1])
+#print Net.forward([0]),"\n"
+#    
+#Net.printNet()
+#print ""
+#
+#LC = 5
+#
+#for i in range(100000):
+#    Net.backProp([1],[0],LC)
+#    Net.backProp([0],[1],LC)
+#    if i%1000 == 0:
+#        LC+=1
+#        print Net.forward([1]), Net.forward([0])
+#
+#    Net.save()
+#
+#Net.printNet()
+#
+#Net = Network(shape=[1,2, 1])
+#
+#for i in range(10000):
+#    netInput = random.randint(0,1)
+#    
+#    netOutput = int(not bool(netInput))
+#        
+#    netReturn = Net.forward([netInput]) 
+#        
+#    Net.backProp([netInput], [netOutput], 2)
+#    
+#for i in range(100):
+#    print Net.forward([0])
+#    print Net.forward([1]),"\n"
