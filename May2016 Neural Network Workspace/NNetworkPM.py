@@ -13,7 +13,7 @@ import math
 #hadamard
 
 class Network:
-    def __init__(self, ID="DEFAULT", shape=[1,1,1], bias = 1):
+    def __init__(self, ID="DEFAULT", shape=[1,1,1], bias = 0.73):
         shape+=[0]
         self.bias = bias
         self.N = [] #Create network and weight list
@@ -22,10 +22,7 @@ class Network:
             for j in range(shape[i]):
                 self.N[-1][0].append(0)
                 self.N[-1][1].append(0)
-                if i != len(shape)-2:
-                    self.N[-1][2].append(np.random.random([shape[i+1]]))
-#                    for i in range(len(self.N[-1][2][-1])):
-#                        print self.N[-1][2][-1][i]
+                self.N[-1][2].append((2*np.random.random([shape[i+1]]))-1)
             if i != len(shape)-2:
                 self.N[-1][2].append(np.random.random([shape[i+1]]))
             self.N[i][0] = np.array(self.N[i][0])
@@ -51,10 +48,12 @@ class Network:
         for i in range(len(self.N)):
             self.N[i][0] = np.array(np.zeros(len(self.N[i][0])))
 		
-
-		
 Net = Network(shape=[1, 1, 1])
-print Net.forward([1])
+print Net.forward([1]),"\n"
+for i in Net.N:
+    for j in i:
+        print j
+print "\n",Net.forward([1])
 #print Net.N
 #print Net.N
 #Net.N[-1].pop(-1)

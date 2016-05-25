@@ -89,7 +89,7 @@ class Network:
         for i in self.shape:
             tempLayer = [Node() for j in range(i+1)]
             tempLayer[-1].isBias = True
-            tempLayer[-1].sum[0] = 3
+            tempLayer[-1].sum = [self.biasValue, self.biasValue]
             self.nodeNet.append(tempLayer)
         
         for i in range(len(self.nodeNet)-1):
@@ -105,8 +105,9 @@ class Network:
             for j in i:
                 if not j.isBias:
                     j.sum = [0, 0]
+                    j.sumSigged = False
                 else:
-                    j.sum = [self.biasValue, 0]
+                    j.sum = [self.biasValue, self.biasValue]
         for i in self.pathNet:
             for j in i:
                 for k in j:
@@ -170,7 +171,7 @@ class Node:
             pass
         
     def output(self):
-        if not self.sumSigged:
+        if not self.sumSigged and not self.isBias:
             self.sigF()
             self.sumSigged = True
         return self.sum
@@ -217,3 +218,17 @@ class Node:
 #for i in range(100):
 #    print Net.forward([0])
 #    print Net.forward([1]),"\n"
+
+#Net = Network(shape=[5, 2, 1])
+#K = 2
+#for i in range(1000000):
+#    _in = [random.randint(0, 1),random.randint(0, 1),random.randint(0, 1),random.randint(0, 1),random.randint(0, 1)]
+#    _out = [0]
+#    
+#    if sum(_in) >= 5:
+#        _out = [1]
+#    Net.backProp(_in, _out, K)
+#    if not i % 1000:
+#        K *= 0.999
+#        print _in, _out,Net.forward(_in), K
+#        
