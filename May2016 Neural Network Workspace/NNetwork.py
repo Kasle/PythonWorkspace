@@ -44,6 +44,9 @@ class Network:
             dataWrite = open("data/" + self.ID + ".netdata", "wb")
             pickle.dump([self.nodeNet, self.pathNet, self.ID, self.shape, self.biasValue], dataWrite, -1)
             dataWrite.close()
+            dataWrite = open("data/" + self.ID +"_BACKUP.netdata", "wb")
+            pickle.dump([self.nodeNet, self.pathNet, self.ID, self.shape, self.biasValue], dataWrite, -1)
+            dataWrite.close()
         except:
             raise
 
@@ -52,9 +55,15 @@ class Network:
             if not os.path.exists("data/" + self.ID + ".netdata"):
                 raise
                 return
-            dataRead = open("data/" + self.ID + ".netdata", "rb")
-            inData = pickle.load(dataRead)
-            dataRead.close()
+            try:
+                dataRead = open("data/" + self.ID + ".netdata", "rb")
+                inData = pickle.load(dataRead)
+                dataRead.close()
+            except:
+                print "Loading from save failed. Loading from backup."
+                dataRead = open("data/" + self.ID + "_BACKUP.netdata", "rb")
+                inData = pickle.load(dataRead)
+                dataRead.close()
             self.nodeNet = inData[0]
             self.pathNet = inData[1]
             self.ID = inData[2]
