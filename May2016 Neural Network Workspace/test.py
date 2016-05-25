@@ -34,10 +34,9 @@ count = 0
 for i in range(100000):
     count+=1
     _in = [10*random.random() - 5, 10*random.random()-5]
-    _out = [0]
-#    if _in[0] < 2.5 and _in[0] > -2.5 and _in[1] > -2.5 and _in[1] < 2.5:
+    _out = [abs(sum(_in))/20]
+#    if (_in[0] < 2.5 and _in[0] > -2.5) or (_in[1] > -2.5 and _in[1] < 2.5):
 #        _out = [1]
-    _out = [1- ((abs(_in[0]) / 10.0) + (abs(_in[1]) / 10.0))]
     Net.backProp(_in, _out, K)
 #    nOut = Net.forward(_in)[0]
 #    Err += abs(nOut - _out[0])
