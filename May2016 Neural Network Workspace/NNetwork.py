@@ -181,7 +181,7 @@ class Node:
         if self.sumSigged:
             self.sumSigged = False
 
-##Example Of Use
+##Example Of Use---------------------------------------------------------------
 #,
 #Net = Network(ID = "TEST",shape=[1, 2, 1])
 #
@@ -218,17 +218,19 @@ class Node:
 #for i in range(100):
 #    print Net.forward([0])
 #    print Net.forward([1]),"\n"
-
-#Net = Network(shape=[5, 2, 1])
-#K = 2
-#for i in range(1000000):
-#    _in = [random.randint(0, 1),random.randint(0, 1),random.randint(0, 1),random.randint(0, 1),random.randint(0, 1)]
-#    _out = [0]
-#    
-#    if sum(_in) >= 5:
-#        _out = [1]
-#    Net.backProp(_in, _out, K)
-#    if not i % 1000:
-#        K *= 0.999
-#        print _in, _out,Net.forward(_in), K
-#        
+#
+#for j in range(1, 4):
+#    for k in range(1,5):
+#        Net = Network(shape=[5] + [k]*j + [1])
+#        K = 2
+#        for i in range(10000):
+#            _in = [random.randint(0, 1),random.randint(0, 1),random.randint(0, 1),random.randint(0, 1),random.randint(0, 1)]
+#            _out = [0]
+#            
+#            if sum(_in) >= 3:
+#                _out = [1]
+#            Net.backProp(_in, _out, K)
+#            if not i % 2000:
+#                #K *= 0.999
+#                print j, k, _in, _out,Net.forward(_in), Net.shape
+                
