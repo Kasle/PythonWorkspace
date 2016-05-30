@@ -5,60 +5,76 @@ import random
 import os
 import math
 
-pSize = 10
-iAmount = 10
-fileType = "Numbers"
+sourcePath = "IInput\\Birds\\"
+imageList = [f for f in os.listdir(sourcePath) if os.path.isfile(os.path.join(sourcePath, f))]
 
-Net = NNetwork.Network("AutoencoderNumbers_v10.0", [pSize ** 2, iAmount*10, pSize**2])
+compressedSize = 20
 
-if not os.path.exists("IOut/"+fileType+"/" + Net.ID):
-    os.makedirs("IOut/"+fileType+"/" + Net.ID);
+encodedSize = 100
 
-_INPUT = []
+imageInputList = []
 
 print "Loading Images"
 
-for j in range(1, iAmount+1):
-    im = Image.open("IInput/"+fileType+"/"+str(j)+".bmp")
-    _INPUT.append([(sum(i)/765.0) for i in list(im.getdata())])
+for j in imageList:
+    im = Image.open(sourcePath+j).resize((compressedSize, compressedSize), Image.ANTIALIAS)
+    imageInputList.append([(sum(i)/(255.0*3)) for i in list(im.getdata())])
+
+Net = NNetwork.Network(''.join(random.choice("A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z".split(",")) for _ in range(10)), shape=[len(imageInputList[0]),encodedSize,len(imageInputList[0])])
+
+print "Original Size:",len(imageInputList[0]),"; Encoded Size", encodedSize
+
+outputPath = "IOut\\"+''.join(random.choice("A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z".split(",")) for _ in range(10))+"\\"
+
+if not os.path.exists(outputPath):
+    os.makedirs(outputPath);
 
 print  "Starting."
 
 tDelta = 0
-K = 0.001
+K = 0.01
 
-tests = 10000
-imageEvery = 5
+tests = 1000
+imageEvery = 1
+
+r=-1
 
 for i in range(1,tests+1):
     tS = time()
-    r = random.randint(0, len(_INPUT)-1)
+    r+=1
+    if r > len(imageInputList)-1:
+        r = 0
     _timeSeconds = ((tests-i)*tDelta)
     _timeHours = int(_timeSeconds / 3600.0)
     _timeSeconds = _timeSeconds - (_timeHours * 3600)
     _timeMinutes = int(_timeSeconds / 60.0)
     _timeSeconds = int(_timeSeconds - (_timeMinutes * 60))
     _time = [str(_timeHours), str(_timeMinutes), str(_timeSeconds)]
-    
-    print 100*(i/float(tests)),"% Complete; ETA (HH:MM:SS):", ":".join(_time),"; Image:",r+1
-    IMG = _INPUT[r]
+    print 100*(i/float(tests)),"% Complete; ETA (HH:MM:SS):", ":".join(_time),"; Image:",r+1, ";", tDelta
+    IMG = imageInputList[r]
     Net.backProp(IMG, IMG, K)
     if not i % imageEvery:
         tOut = []
+#        tOut2 = []
         oPix = Net.forward(IMG)
-        for j in oPix:
-            val = int(255 * j)
-            tOut+=[(val, val, val)]
-        t = Image.new('RGB', (pSize, pSize))
+        for j in range(len(oPix)):
+            val1 = int(255 * oPix[j])
+#            val2 = int(255 * IMG[j])
+            tOut+=[(val1, val1, val1)]
+#            tOut2+=[(val2, val2, val2)]
+        t = Image.new('RGB', (compressedSize, compressedSize))
         t.putdata(tOut)
-        t.save("IOut/"+fileType+"/" + Net.ID + "/" + str(i)+".bmp")
+        t.save(outputPath + str(i)+"_"+str(r)+".bmp")
+#        t = Image.new('RGB', (compressedSize, compressedSize))
+#        t.putdata(tOut2)
+#        t.save(outputPath + str(i)+"_"+str(r)+"_2.bmp")
     tDelta = ((tDelta * i) + (time()-tS)) / (i+1)
-for i in range(iAmount):
-    oPix = Net.forward(_INPUT[i])
+for i in imageInputList:
     tOut = []
-    for j in oPix:
-        val = int(255 * j)
-        tOut+=[(val, val, val)]
-    t = Image.new('RGB', (pSize, pSize))
+    iN = Net.forward(i)
+    for j in iN:
+        val1 = int(255 * j)
+        tOut+=[(val1, val1, val1)]
+    t = Image.new('RGB', (compressedSize, compressedSize))
     t.putdata(tOut)
-    t.show()
+    t.save(outputPath+Net.ID+"_"+str(imageInputList.index(i))+"_"+".bmp")
