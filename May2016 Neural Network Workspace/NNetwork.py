@@ -33,7 +33,7 @@ class Network:
                     self.makeNet()
                     self.save()
                     print "New network \""+self.ID+"\" saved successfully."
-                except:
+                except: 
                     print "New network creation failed. Creating temporary network."
                     self.makeNet()
             
