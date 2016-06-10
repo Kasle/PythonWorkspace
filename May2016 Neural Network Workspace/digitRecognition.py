@@ -1,57 +1,80 @@
 import NNetwork
 from PIL import Image 
-from time import time
-import random
 import os
-import math
+import customFunctions as F
+import time
 
 sourcePath = "IInput\\Numbers\\"
 imageList = [f for f in os.listdir(sourcePath) if os.path.isfile(os.path.join(sourcePath, f))]
-
-rootZoneSize = 50
 
 imageInputList = []
 
 print "Loading Images"
 
+#for j in imageList:
+#    im = Image.open(sourcePath+j)
+#    print sourcePath+j,":"
+#    print [round(k,3) for k in Net.forward([(sum(i)/(255.0)) for i in list(im.getdata())])]
+#    
+#exit()
+
 for j in imageList:
     im = Image.open(sourcePath+j)
-    imageInputList.append([(sum(i)/(255.0*3)) for i in list(im.getdata())])
+    print sourcePath+j
+    imageInputList.append([(sum(i)/(255.0)) for i in list(im.getdata())])
+    
 
-Net = NNetwork.Network(ID="DigitRec_v7.0", shape=[len(imageInputList[0]),rootZoneSize*2,10])
-
-print  "Starting."
-
-tDelta = 0
-K = 0.01
-
-tests = 10000
-
-r=-1
-
-ERROR=0
-
-for i in range(1,tests+1):
-    tS = time()
-    r+=1
-    if r > len(imageInputList)-1:
-        r = 0
-    _timeSeconds = ((tests-i)*tDelta)+1
-    _timeHours = int(_timeSeconds / 3600.0)
-    _timeSeconds = _timeSeconds - (_timeHours * 3600)
-    _timeMinutes = int(_timeSeconds / 60.0)
-    _timeSeconds = int(_timeSeconds - (_timeMinutes * 60))
-    _time = [str(_timeHours), str(_timeMinutes), str(_timeSeconds)]
-    IMG = imageInputList[r]
-    OUT = [round(j, 3) for j in Net.forward(IMG)]
-    print 100*(i/float(tests)),"% Complete; ETA (HH:MM:SS):", ":".join(_time),"; Number:",r, ";", ERROR,";",OUT
-    ERROR = 0
-    outputList = [-10, -10, -10, -10, -10 , -10, -10, -10, -10, -10]
-    outputList[r]=10
-    Net.backProp(IMG, outputList, K)
-    OUT = Net.forward(IMG)
-    for i in range(len(OUT)):
-       ERROR += abs(OUT[i] - outputList[i])
-    if not i%100:
-        Net.save()
-    tDelta = ((tDelta * i) + (time()-tS)) / (i+1)
+#Net = NNetwork.Network(ID="DigitRec_v5", shape=[len(imageInputList[0]),25,4])
+#
+#print  "Starting."
+#
+#K = 0.01
+#
+#testNum = 1000
+#
+#for i in range(testNum):
+##    ts = time.time()
+#    for j in range(len(imageInputList)):
+#        binReturn = F.intToBinary(j)
+#        inp = F.cListToFloat((list("0"*(4-len(binReturn))+binReturn)))
+#        Net.backProp(imageInputList[j], inp,K)
+#        if not i%10:
+#            temp = Net.forward(imageInputList[j])
+#            print "OUTPUT:",inp,[round(p) for p in temp], inp==[round(p) for p in temp]
+#    if not i%100:
+#        Net.save()
+#        print "-- OVERALL ---------------------------------------------"
+#        for l in imageInputList:
+#            temp = Net.forward(l)
+#            print "OUTPUT:",[round(p, 3) for p in temp]
+#        print "-- END OVERALL ---------------------------------------------"
+##    tr = (time.time() - ts) * (testNum - i)
+###    print "ETA:",tr
+#
+#Encode = NNetwork.Network(ID="DigitRecEncode_4.0", shape=[len(imageInputList[0]),10, 4])
+#Decode = NNetwork.Network(ID="DigitRecDecode_4.0", shape=[4, 10, 10])
+#
+#print  "Starting."
+#
+#K = 0.01
+#
+#testNum = 100000
+#
+#ERRs = [[], [], [], [], [], [], [], [], [], []]
+#cnt = 0
+#
+#for i in range(testNum):
+#    for image in range(len(imageInputList)):
+#        Num = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#        Num[image] = 1.0
+#        EncOut = Encode.forward(imageInputList[image])
+#        Decode.backProp(EncOut, Num, K)
+#        DecodeInputPropagated =  [node.sum[0] for node in Decode.nodeNet[0]][0:-1]
+#        Encode.backProp(imageInputList[image], DecodeInputPropagated, K)
+#    if not i%100:
+#        print "--",i, "--------------------------------------------------------"
+#        for image in range(len(imageInputList)):
+#            Num = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+#            Num[image] = 1.0
+#            EncOut = Encode.forward(imageInputList[image])
+#            print [round(o, 3) for o in Decode.forward(EncOut)]

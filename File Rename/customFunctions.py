@@ -1,4 +1,5 @@
 import os
+import math
 
 #List Functions -------------------------------------------------------------
 
@@ -49,7 +50,7 @@ def mxDivide(a, b):
         print "ERROR: Matrices are not of equal length"
     return None
         
-def mxHadamard(a, b):
+def mxMultiply(a, b): #Hadamard
     if len(a) == len(b):
         try:
             rMatrix = [a[i]*b[i] for i in range(len(a))]
@@ -63,11 +64,41 @@ def mxHadamard(a, b):
 
 #Number Operations ------------------------------------------------------------
 
-def splitDecimal(nIn):
+def splitDecimal(nIn): # Takes a number, splits it at the decimal, then returns the decimal and the number.
     rList= (str(float(nIn)).split("."))
     rList[1] = "0."+rList[1]
     return cListToFloat(rList)
     
+def rangeMap(value, valLow, valHigh, numLow, numHigh, constrain = False):
+    valDiff = abs(valHigh-valLow)
+    numDiff = abs(numHigh-numLow)
+    temp = value
+    if temp > valHigh and constrain: temp = valHigh
+    elif temp < valLow and constrain: temp = valLow 
+    temp =  (((temp - valLow) / float(valDiff)) * numDiff)+numLow
+    return temp
+    
+def intToBinary(inp):
+    try:
+        outStr = ""
+        temp = inp
+        curr = 2
+        processed = 0
+        if temp == 0:
+            return "0"
+        while True:
+            if (temp-processed) % curr:
+                outStr="1"+outStr
+                processed += curr / 2
+            else:
+                outStr="0"+outStr
+            if curr > temp:
+                break
+            curr*=2
+        return outStr
+    except:
+        return "0"
+
 #Time Operations --------------------------------------------------------------
 
 def addTime(tStart, tAdd): # Eg. ("11:25:03", "00:01:05"), ("HH:MM:SS","HH:MM:SS" to add)
