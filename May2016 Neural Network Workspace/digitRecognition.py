@@ -22,6 +22,7 @@ for j in imageList:
     im = Image.open(sourcePath+j)
     print sourcePath+j
     imageInputList.append([(sum(i)/(255.0)) for i in list(im.getdata())])
+    print sum(imageInputList[-1])
     
 
 #Net = NNetwork.Network(ID="DigitRec_v5", shape=[len(imageInputList[0]),25,4])
