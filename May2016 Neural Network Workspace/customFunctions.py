@@ -1,4 +1,8 @@
 import os
+<<<<<<< HEAD
+=======
+import random
+>>>>>>> 4af91c2f6e233e8e61d0b3ef336095e3b2fb8037
 
 #List Functions -------------------------------------------------------------
 
@@ -138,4 +142,25 @@ def getFilesInFolder(path):
     for i in os.listdir(path):
         if os.path.isfile(os.path.join(path, i)):
             returnFiles.append(os.path.join(path, i))
+<<<<<<< HEAD
     return returnFiles
+=======
+    return returnFiles
+    
+#String Functions -------------------------------------------------------------
+    
+def genULString(n):
+    alph = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+    retSt =''
+    for i in range(n):
+        ul = random.randint(0, 1)
+        choose = alph[random.randint(0, len(alph)-1)]
+        if ul:
+            retSt += choose
+        else:
+            retSt += choose.lower()
+    return retSt
+
+print genULString(40)
+            
+>>>>>>> 4af91c2f6e233e8e61d0b3ef336095e3b2fb8037
