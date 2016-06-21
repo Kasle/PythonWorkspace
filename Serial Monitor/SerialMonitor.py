@@ -26,7 +26,6 @@ for i in range(5):
     except:
         if i >= 4: print "Error connecting to COM"+port+".\nPress any key to exit."; raw_input();exit()
         print "Error connecting to COM"+port+". Attempting to reconnect. (" + str(4-i) + ") Attempts remain."
-        sleep(2)
 
 eCount = 0
 
