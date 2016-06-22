@@ -155,5 +155,22 @@ def genULString(n):
             retSt += choose.lower()
     return retSt
 
-print genULString(40)
-            
+import math
+
+def sig(x):
+    return math.tanh(x)
+
+h = 100
+s = 8000
+
+import numpy as np
+
+from time import time
+inp = np.random.uniform(-5,5,s)
+print "starting"
+tn = time()
+for i in range(h):
+    a = np.random.uniform(-1,1,s)
+    inp = inp * a
+    inp = np.array([sig(j) for j in inp])
+print "Done", time()-tn
