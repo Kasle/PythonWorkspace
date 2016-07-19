@@ -154,6 +154,4 @@ def genULString(n):
         else:
             retSt += choose.lower()
     return retSt
-
-print genULString(40)
             
