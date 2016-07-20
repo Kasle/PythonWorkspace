@@ -154,4 +154,14 @@ def genULString(n):
         else:
             retSt += choose.lower()
     return retSt
+
+#File Operations --------------------------------------------------------------
+
+def graph():
+    f = open(raw_input("File: "))
+    rl = f.readlines()
+    col = int(raw_input("Column: "))
+    mult = float(raw_input("Multiplier: "))
+    for i in rl[2:]:
+        print int(float(i.split(",")[col]) * mult)*"#"
             
