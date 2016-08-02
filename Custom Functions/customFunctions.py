@@ -134,11 +134,16 @@ def timeToCode(spl): # Eg. [2000, 12, 03, 23, 13, 04], [YYYY, MM, DD, HH, mm, SS
     
 #Folder Operations ------------------------------------------------------------
 
-def getFilesInFolder(path="."):
+def getFilesInFolder(path=".", mode = 0):
     returnFiles = []
-    for i in os.listdir(path):
-        if os.path.isfile(os.path.join(path, i)):
-            returnFiles.append(os.path.join(path, i))
+    if mode == 0:
+        for i in os.listdir(path):
+            if os.path.isfile(os.path.join(path, i)):
+                returnFiles.append(os.path.join(path, i))
+    elif mode == 1:
+        for root, dirs, files in os.walk("."):
+            for i in files:
+                returnFiles+= [root+"\\"+i]
     return returnFiles
     
 #String Functions -------------------------------------------------------------
