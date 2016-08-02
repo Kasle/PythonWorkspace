@@ -1,15 +1,18 @@
 __author__ = 'aleks_000'
 
-import sys
+iF = open("INPUT.txt", 'r')
+CHAR = iF.readlines()
 
-CHAR = sys.stdin.readlines()
-LEN = int(CHAR.pop())
+try:
+	LEN = int(CHAR[-1]) #Percision (Max Individual Search Length)
+except:
+	LEN = 3
 
 CHAR = " ".join(CHAR).translate(None, ',./:"|[]{}!<>?;()').replace("\n", "")
 
 SET = filter(None, CHAR.split(" "))
 
-print SET
+#print SET
 
 STRDATA = []
 NUMDATA = []
@@ -69,10 +72,10 @@ MAX = (float(NUMDATA[0]) / TOTAL) * 100
 # print NUMDATA, STRDATA, sum(NUMDATA)
 
 while True:
-    if (float(NUMDATA[INDEX]) / NUMDATA[0]) > 0.05:
+    if (float(NUMDATA[INDEX]) / NUMDATA[0]) > 0.05 and NUMDATA[INDEX] > 1:
         X = int((float(NUMDATA[INDEX]) / TOTAL) * 100)
         Y = int((float(NUMDATA[INDEX]) / NUMDATA[0]) * 100)
-        print "> -" + (Y)*"#" + (101-Y)*"=" + " : " + str((float(NUMDATA[INDEX]) / TOTAL) * 100.0)[:4] + "% : " + str(NUMDATA[INDEX]) + " : " + (STRDATA[INDEX].upper())
+        print "> =" + (Y)*"#" + (101-Y)*"=" + " : " + str((float(NUMDATA[INDEX]) / TOTAL) * 100.0)[:4] + "% : " + str(NUMDATA[INDEX]) + " : " + (STRDATA[INDEX].upper())
     else:
         print "> EXIT : Tolerance Reached"
         break
@@ -81,5 +84,4 @@ while True:
     if INDEX == len(NUMDATA):
         print "> EXIT : End of Data Reached"
         break
-
-
+raw_input()

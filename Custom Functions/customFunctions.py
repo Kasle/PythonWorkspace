@@ -134,7 +134,7 @@ def timeToCode(spl): # Eg. [2000, 12, 03, 23, 13, 04], [YYYY, MM, DD, HH, mm, SS
     
 #Folder Operations ------------------------------------------------------------
 
-def getFilesInFolder(path):
+def getFilesInFolder(path="."):
     returnFiles = []
     for i in os.listdir(path):
         if os.path.isfile(os.path.join(path, i)):
@@ -143,7 +143,7 @@ def getFilesInFolder(path):
     
 #String Functions -------------------------------------------------------------
     
-def genULString(n):
+def genRandomString(n):
     alph = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
     retSt =''
     for i in range(n):
@@ -157,11 +157,20 @@ def genULString(n):
 
 #File Operations --------------------------------------------------------------
 
-def graph():
-    f = open(raw_input("File: "))
+def graph(fileName, index, multiplier):
+    f = open(fileName, 'r')
     rl = f.readlines()
-    col = int(raw_input("Column: "))
-    mult = float(raw_input("Multiplier: "))
+    col = int(index)
+    mult = float(multiplier)
     for i in rl[2:]:
         print int(float(i.split(",")[col]) * mult)*"#"
-            
+        
+#OS Operations ----------------------------------------------------------------
+
+from msvcrt import getch as get     
+def readKeys():
+    while True:
+        key =  ord(get())
+        print key
+        if key == 27: #ESC
+            break
