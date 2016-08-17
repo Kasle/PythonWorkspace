@@ -6,60 +6,61 @@ class time: #Main Class
         self.h = int(time.split(":")[0])
         
     def __add__(self, other): #Adding time (Main use)
-        self.s+=other.s #Add variables from other time
-        self.m+=other.m
-        self.h+=other.h
+        returnTime = time(self.t)
+        returnTime.s+=other.s #Add variables from other time
+        returnTime.m+=other.m
+        returnTime.h+=other.h
         
-        #print self.s, self.m, self.h
+        #print returnTime.s, returnTime.m, returnTime.h
         
-        if self.s >= 60: #Crop seconds
-            tmin = int(self.s / 60)
-            self.s-=60 * (tmin)
-            self.m+=tmin
+        if returnTime.s >= 60: #Crop seconds
+            tmin = int(returnTime.s / 60)
+            returnTime.s-=60 * (tmin)
+            returnTime.m+=tmin
             
-        #print self.s, self.m, self.h
+        #print returnTime.s, returnTime.m, returnTime.h
         
-        if self.m >= 60: #Crop minutes
-            thour = (self.m / 60)
-            self.m-=60 * (thour)
-            self.h+=thour
+        if returnTime.m >= 60: #Crop minutes
+            thour = (returnTime.m / 60)
+            returnTime.m-=60 * (thour)
+            returnTime.h+=thour
         
-        #print self.s, self.m, self.h        
+        #print returnTime.s, returnTime.m, returnTime.h        
         
-        if self.h >= 24: #Crop hours
-            hmult = self.h / 24
-            self.h-=24 * hmult
-        self.update() #Update string
-        return self #Return the new time
+        if returnTime.h >= 24: #Crop hours
+            hmult = returnTime.h / 24
+            returnTime.h-=24 * hmult
+        returnTime.update() #Update string
+        return returnTime #Return the new time
     
     def __sub__(self, other): #Subtract two times
+        returnTime = time(returnTime.t)
+        returnTime.s -= other.s
+        returnTime.m -= other.m
+        returnTime.h -= other.h
         
-        self.s -= other.s
-        self.m -= other.m
-        self.h -= other.h
-        
-        mult = abs(int(self.s / 60)) #rectify and crop seconds, minutes, and hours
-        self.s += 60 * mult
-        if self.s < 0:
-            self.s+=60
+        mult = abs(int(returnTime.s / 60)) #rectify and crop seconds, minutes, and hours
+        returnTime.s += 60 * mult
+        if returnTime.s < 0:
+            returnTime.s+=60
             mult+=1
-        self.m -= mult
+        returnTime.m -= mult
         
-        mult = abs(int(self.m / 60))
-        self.m += 60 * mult
-        if self.m < 0:
-            self.m+=60
+        mult = abs(int(returnTime.m / 60))
+        returnTime.m += 60 * mult
+        if returnTime.m < 0:
+            returnTime.m+=60
             mult+=1
-        self.h -= mult
+        returnTime.h -= mult
         
-        mult = abs(int(self.h / 24))
-        self.h += 24 * mult
-        if self.h < 0:
-            self.h+=24
+        mult = abs(int(returnTime.h / 24))
+        returnTime.h += 24 * mult
+        if returnTime.h < 0:
+            returnTime.h+=24
         
-        self.update() #Update string
+        returnTime.update() #Update string
         
-        return self #Return
+        return returnTime #Return
         
     def __str__(self): #Print function
         self.update()
@@ -84,10 +85,9 @@ class time: #Main Class
 #a = time("22:00:55")
 #b = time("00:00:1")
 #
-#from time import sleep
+#print a, b
 #
-#for i in range(24*3600):
-#    print a
-#    a = a + b
-#    sleep(0.01)
-    
+#print a + b
+#
+#print a, b
+#    
