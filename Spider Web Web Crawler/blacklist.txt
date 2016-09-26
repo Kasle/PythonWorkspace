@@ -29,3 +29,7 @@ http://hydrogen.physik.uni-wuppertal.de/
 #
 http://www.psigate.ac.uk/newsite/
 hyperphysics
+tel:+19055259140
+javaScript:window.print();
+javaScript:window.print();
+javaScript:window.print();

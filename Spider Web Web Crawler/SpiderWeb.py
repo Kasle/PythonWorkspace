@@ -4,7 +4,7 @@ import urllib
 from bs4 import BeautifulSoup
 
 #https://en.wikipedia.org/wiki/Special:Random
-url = 'http://hyperphysics.phy-astr.gsu.edu'
+url = 'http://www.cas.mcmaster.ca/~mohrens/'
 #url = raw_input("Web Seed: ")
 
 search = raw_input('Please enter search term(s) seperated by commas: ').split(",")
