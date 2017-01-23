@@ -11,6 +11,33 @@ def cListToString(sL):
     
 def cListToInt(sL):
     return [int(i) for i in sL]
+
+def sort(iList):
+    temp = iList
+    size = 1
+    while 1:
+        temp2 = []
+        for i in range(0, len(temp), size*2):
+            A = temp[i:i+size]
+            B = temp[i+size:i+2*size]
+            while A and B:
+                if A[0] < B[0]:
+                    temp2.append(A.pop(0))
+                else:
+                    temp2.append(B.pop(0))
+            temp2 += A + B
+        temp = temp2
+        size*=2
+        if size > len(temp):
+            break
+    return temp
+
+from time import time
+start = time()
+for i in range(10000):
+    tl = [random.randint(-100, 100) for i in range(random.randint(3, 50))]
+    tl.sort()
+print time() - start
     
 #Matrix Operations ------------------------------------------------------------
     
