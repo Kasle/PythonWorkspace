@@ -20,17 +20,16 @@ print "Connecting to port COM" + port + "."
 
 for i in range(5):
     try:
-        ser = serial.Serial('COM' + port, 9600)
+        ser = serial.Serial('COM' + port, 57600)
         print "Connection to port COM" + port + " successfill."
         break
     except:
         if i >= 4: print "Error connecting to COM"+port+".\nPress any key to exit."; raw_input();exit()
         print "Error connecting to COM"+port+". Attempting to reconnect. (" + str(4-i) + ") Attempts remain."
-        sleep(2)
 
 eCount = 0
 
-ser.flushInput()
+ser.flush()
 
 
 while True:

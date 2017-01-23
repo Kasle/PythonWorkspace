@@ -1,5 +1,3 @@
-
-
 class Matrix:
     def __init__(self, data):
         self.data = data
@@ -35,5 +33,5 @@ class Matrix:
             return temp
             
 A = Matrix([[1, 2],[3, 4]])
-B = Matrix([2, 3])
-C = Matrix([[1],[1,2],[[1, 2, 3],[1]]])
+
+print A.size()

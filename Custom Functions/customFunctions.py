@@ -11,6 +11,33 @@ def cListToString(sL):
     
 def cListToInt(sL):
     return [int(i) for i in sL]
+
+def sort(iList):
+    temp = iList
+    size = 1
+    while 1:
+        temp2 = []
+        for i in range(0, len(temp), size*2):
+            A = temp[i:i+size]
+            B = temp[i+size:i+2*size]
+            while A and B:
+                if A[0] < B[0]:
+                    temp2.append(A.pop(0))
+                else:
+                    temp2.append(B.pop(0))
+            temp2 += A + B
+        temp = temp2
+        size*=2
+        if size > len(temp):
+            break
+    return temp
+
+from time import time
+start = time()
+for i in range(10000):
+    tl = [random.randint(-100, 100) for i in range(random.randint(3, 50))]
+    tl.sort()
+print time() - start
     
 #Matrix Operations ------------------------------------------------------------
     
@@ -134,16 +161,21 @@ def timeToCode(spl): # Eg. [2000, 12, 03, 23, 13, 04], [YYYY, MM, DD, HH, mm, SS
     
 #Folder Operations ------------------------------------------------------------
 
-def getFilesInFolder(path):
+def getFilesInFolder(path=".", mode = 0):
     returnFiles = []
-    for i in os.listdir(path):
-        if os.path.isfile(os.path.join(path, i)):
-            returnFiles.append(os.path.join(path, i))
+    if mode == 0:
+        for i in os.listdir(path):
+            if os.path.isfile(os.path.join(path, i)):
+                returnFiles.append(os.path.join(path, i))
+    elif mode == 1:
+        for root, dirs, files in os.walk("."):
+            for i in files:
+                returnFiles+= [root+"\\"+i]
     return returnFiles
     
 #String Functions -------------------------------------------------------------
     
-def genULString(n):
+def genRandomString(n):
     alph = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
     retSt =''
     for i in range(n):
@@ -155,22 +187,22 @@ def genULString(n):
             retSt += choose.lower()
     return retSt
 
-import math
+#File Operations --------------------------------------------------------------
 
-def sig(x):
-    return math.tanh(x)
+def graph(fileName, index, multiplier):
+    f = open(fileName, 'r')
+    rl = f.readlines()
+    col = int(index)
+    mult = float(multiplier)
+    for i in rl[2:]:
+        print int(float(i.split(",")[col]) * mult)*"#"
+        
+#OS Operations ----------------------------------------------------------------
 
-h = 100
-s = 8000
-
-import numpy as np
-
-from time import time
-inp = np.random.uniform(-5,5,s)
-print "starting"
-tn = time()
-for i in range(h):
-    a = np.random.uniform(-1,1,s)
-    inp = inp * a
-    inp = np.array([sig(j) for j in inp])
-print "Done", time()-tn
+from msvcrt import getch as get     
+def readKeys():
+    while True:
+        key =  ord(get())
+        print key
+        if key == 27: #ESC
+            break
