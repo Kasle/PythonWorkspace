@@ -3,7 +3,7 @@ import random
 
 #11, 6, 5
 
-inp = "12345"
+inp = "abcdefghijklmnopqrstuvwxyz"
 
 print("Approx Max:", len(inp)*5000)
 
@@ -13,25 +13,23 @@ currGen = ["".join([random.choice(options) for i in range(random.randint(10, 100
 nextGen = []
 
 while True:
-    currGen += ["".join([random.choice(options) for i in range(random.randint(1, 100))]) for j in range(50)]
+    nextGen = []
+    currGen += ["".join([random.choice(options) for i in range(random.randint(1, 100))]) for j in range(100)]
     while len(currGen):
         code = currGen.pop(0)
         out = bf.bfrun(code, len(inp))[0]
 
         fitness = 0
 
-        for i in range(max(len(inp), len(out))):
-            if i >= len(out):
-                fitness += -ord(inp[i])
-            elif i < len(out) and i < len(inp):
-                fitness += 100*(1000.0 / (1+abs(ord(inp[i])-ord(out[i]))))
-            elif i >= len(inp):
-                fitness += -ord(out[i])
-            else:
-                print('err')
+        #print (code, len(out), len(inp))
 
-        fitness -= len(code)*100
+        fitness += len(code)
+        fitness += 2*abs(len(inp) - len(out))
+        for i in range(min(len(inp),len(out))):
+            fitness += abs(ord(inp[i])-ord(out[i]))
 
+        fitness*=-1
+        
         if len(nextGen) > 0:
             for i in range(len(nextGen)):
                 if nextGen[i][1] < fitness:
@@ -41,32 +39,26 @@ while True:
         else:
             nextGen.append([code, fitness])
 
-    nextGen = nextGen[:5]
+    nextGen = nextGen[:10]
+    currGen = []
 
-    print (nextGen[0])
+    print ( nextGen[0][0] )
+    #print (nextGen[0], bf.bfrun(nextGen[0], len(inp)))
 
-    for A in range(len(nextGen)-1):
-        for B in range(A+1, len(nextGen)):
+    for node in range(len(nextGen)):
+        currGen.append(nextGen[node][0])
+        for count in range(20):
+
             temp = ""
             
-            for index in range(max(len(nextGen[A][0]),len(nextGen[B][0]))):
-                if random.random() < 0.1:
+            for index in range(len(nextGen[node][0])):
+                val = random.random()
+                if val < 0.2:
                     continue
-                
-                if random.random() < 0.2:
+                elif val < 0.2:
                     temp+=random.choice(options)
-                
-                if random.random() < 0.2:
-                    temp+=random.choice(options)
-                elif index < len(nextGen[A][0]) and index < len(nextGen[B][0]):
-                    if random.random() < 0.5:
-                        temp+=nextGen[A][0][index]
-                    else:
-                        temp+=nextGen[B][0][index]
-                elif index < len(nextGen[A][0]):
-                    temp+=nextGen[A][0][index]
                 else:
-                    temp+=nextGen[B][0][index]
+                    temp+=nextGen[node][0][index]
 
             if random.random() < 0.6:
                 temp+="".join([random.choice(options) for radd in range(random.randint(0, 5))])

@@ -80,4 +80,4 @@ def bfrun(inp, memCount = 256):
     
     return [prnt, memList]
 
-print (bfrun(""))
+print (bfrun("[]"), 10)
