@@ -41,10 +41,10 @@ class Network: #class definition
         self.Bias = inData[1]
         self.Neurons = inData[2]
 
-    def printNet(self):
-        for i in self.Neurons:
+    def printNet(self): #print the values inside the network(weights, sums, learning values, ect...
+        for i in self.Neurons: #for every neuron
             for j in i:
-                print j.Weights, ":", j.sum, j.delta, ":", self.Neurons.index(i), i.index(j)
+                print j.Weights, ":", j.sum, j.delta, ":", self.Neurons.index(i), i.index(j) #print everything
 
     def __createdefault(self, sizes, bias):
         self.Size = sizes
