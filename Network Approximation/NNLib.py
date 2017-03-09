@@ -136,24 +136,24 @@ class Network: #class definition
         return 1.0 / (1.0 + math.exp(-x))
 
 
-class Neuron:
-    def __init__(self, weights, sum = 0, isBias = False):
-        self.sum = sum
+class Neuron: #neuron defenition
+    def __init__(self, weights, sum = 0, isBias = False): #initialization
+        self.sum = sum #set some values
         self.Weights = weights
         self.delta = 0
         self.isBias = isBias
 
-    def forward(self):
-        self.output = []
-        for i in range(len(self.Weights)):
-            self.output.append(self.Weights[i] * self.sum)
-        return self.output
+    def forward(self): #forward function
+        self.output = [] #output array for return
+        for i in range(len(self.Weights)): #for every weight
+            self.output.append(self.Weights[i] * self.sum) #multiply internal sum by weights 
+        return self.output #return output
 
-    def sigf(self):
+    def sigf(self): #activation function
         try:
             self.sum = 1.0 / (1.0 + math.exp(-self.sum))
         except:
             self.sum = 0
 
-    def add(self, a):
-        self.sum += a
+    def add(self, a): #add function for external use
+        self.sum += a #add a value to the sum
