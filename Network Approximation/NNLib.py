@@ -1,25 +1,29 @@
 # 11/2015 NNlib
 # AAAAA
 
-import math
+## Commented by: Aleksander Mercik Mar 2017
+## ========================================
+## Neural Network Library
+
+import math #Imports
 import os.path
 from random import random
-import pickle
+import pickle #this import is used for data saving
 
 
-class Network:
-    def __init__(self, id="DEFAULT", sizes=[1, 1, 1], bias=1):
-        self.ID = id
-        if self.ID == "DEFAULT":
-            self.__createdefault(sizes, bias)
-        else:
-            if os.path.exists("data/" + self.ID + ".netdata"):
-                if sizes!=[1, 1, 1] or bias != 1:
+class Network: #class definition
+    def __init__(self, id="DEFAULT", sizes=[1, 1, 1], bias=1): #initialize with some defaults for no user specifications
+        self.ID = id #set the id of the network
+        if self.ID == "DEFAULT": #if the network is a default network
+            self.__createdefault(sizes, bias) #internal create network
+        else: 
+            if os.path.exists("data/" + self.ID + ".netdata"): #check if the network exists
+                if sizes!=[1, 1, 1] or bias != 1: #error checking / warning
                     print "WARNING: This network already exists and cannot be modified during loading"
-                self.load()
-            else:
-                self.__createdefault(sizes, bias)
-                self.save()
+                self.load() #load the network file if it exists
+            else: #if the network is new
+                self.__createdefault(sizes, bias) #create a new network
+                self.save() #save the network
 
     def save(self):
         if not os.path.isdir("data"):
