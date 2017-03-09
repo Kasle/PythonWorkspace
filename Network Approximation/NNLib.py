@@ -121,18 +121,18 @@ class Network: #class definition
                     j.Weights[j.Weights.index(k)] += -K*j.sum*self.Neurons[self.Neurons.index(i)+1][j.Weights.index(k)].delta #add delta
         self.__clean() #clean the network for next use
 
-    def __clean(self):
-        for i in self.Neurons:
+    def __clean(self): #clean function defenition
+        for i in self.Neurons: #for every element in the netowrk
             for j in i:
                 if not j.isBias:
-                    j.sum = 0
+                    j.sum = 0 #reset the current sum to 0 if not a bias
                 else:
-                    j.sum = self.Bias
+                    j.sum = self.Bias #set to the bias if the neuron should be a bias neuron
 
-    def __sigfd(self, x):
+    def __sigfd(self, x): #derivitave for learning
         return self.__sigf(x) * (1 - self.__sigf(x))
 
-    def __sigf(self, x):
+    def __sigf(self, x): #activation function
         return 1.0 / (1.0 + math.exp(-x))
 
 
