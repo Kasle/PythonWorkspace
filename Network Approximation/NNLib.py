@@ -99,27 +99,27 @@ class Network: #class definition
             self.__clean() #clean function
         return out #return the output values
 
-    def backprop(self, IN, EOUT, K=0.1):
-        if len(EOUT) != self.Size[-1]:
+    def backprop(self, IN, EOUT, K=0.1): #backpropgation algorithm for learning
+        if len(EOUT) != self.Size[-1]: #error checking for output size
             print "ERROR: Output size invalid"
             return
-        elif len(IN) != self.Size[0]:
+        elif len(IN) != self.Size[0]: #error checking for input size
             print "ERROR: Input size invalid"
             return
-        self.forward(IN, isLearn=True)
-        for i in self.Neurons[-1]:
-            i.delta = i.sum*(1.0-i.sum)*(i.sum - EOUT[self.Neurons[-1].index(i)])
-        for i in self.Neurons[-2:0:-1]:
-            for j in i[0:-1]:
-                tSum = 0
-                for k in j.Weights:
-                    tSum+=k*self.Neurons[self.Neurons.index(i)+1][j.Weights.index(k)].delta
-                j.delta = j.sum*(1-j.sum)*tSum
-        for i in self.Neurons[0:-1]:
+        self.forward(IN, isLearn=True) #forward the input values and KEEP THE INTERNAL VALUES FOR CALCULATION
+        for i in self.Neurons[-1]: #for every bias
+            i.delta = i.sum*(1.0-i.sum)*(i.sum - EOUT[self.Neurons[-1].index(i)]) #conpute the learning delta
+        for i in self.Neurons[-2:0:-1]: #for every layer, going backwards
+            for j in i[0:-1]: #for every nueron
+                tSum = 0 #temp sum
+                for k in j.Weights: #for all the weights
+                    tSum+=k*self.Neurons[self.Neurons.index(i)+1][j.Weights.index(k)].delta #modify based on caluclated delta
+                j.delta = j.sum*(1-j.sum)*tSum #set the delta
+        for i in self.Neurons[0:-1]: #add weights for non bias neurons
             for j in i:
                 for k in j.Weights:
-                    j.Weights[j.Weights.index(k)] += -K*j.sum*self.Neurons[self.Neurons.index(i)+1][j.Weights.index(k)].delta
-        self.__clean()
+                    j.Weights[j.Weights.index(k)] += -K*j.sum*self.Neurons[self.Neurons.index(i)+1][j.Weights.index(k)].delta #add delta
+        self.__clean() #clean the network for next use
 
     def __clean(self):
         for i in self.Neurons:
