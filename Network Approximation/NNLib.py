@@ -25,19 +25,19 @@ class Network: #class definition
                 self.__createdefault(sizes, bias) #create a new network
                 self.save() #save the network
 
-    def save(self):
-        if not os.path.isdir("data"):
-            os.makedirs("data")
-        dataWrite = open("data/" + self.ID + ".netdata", "wb")
-        pickle.dump([self.Size, self.Bias, self.Neurons], dataWrite, -1)
+    def save(self): #save function
+        if not os.path.isdir("data"): #is there a save directory
+            os.makedirs("data") #make a directory if there is no save directory
+        dataWrite = open("data/" + self.ID + ".netdata", "wb") #write the save file
+        pickle.dump([self.Size, self.Bias, self.Neurons], dataWrite, -1) #dump information to the save file
 
-    def load(self):
-        if not os.path.exists("data/" + self.ID + ".netdata"):
+    def load(self): #load function
+        if not os.path.exists("data/" + self.ID + ".netdata"): #is ther something to load
             print "ERROR: No data to load from"
             return
-        dataRead = open("data/" + self.ID + ".netdata", "rb")
-        inData = pickle.load(dataRead)
-        self.Size = inData[0]
+        dataRead = open("data/" + self.ID + ".netdata", "rb") #read the loaded file
+        inData = pickle.load(dataRead) #read the data
+        self.Size = inData[0] #set the read data
         self.Bias = inData[1]
         self.Neurons = inData[2]
 
