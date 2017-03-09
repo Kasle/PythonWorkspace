@@ -65,39 +65,39 @@ class Network: #class definition
         for i in range(self.Size[-1]): #append output neurons
             self.Neurons[-1].append(Neuron([1]))
 
-    def forward(self, IN, isLearn = False):
-        if len(IN) != self.Size[0]:
+    def forward(self, IN, isLearn = False): #forward function: run the network
+        if len(IN) != self.Size[0]: #error checking for input size
             print "ERROR: Input size invalid"
             return
         # In
-        for i in range(len(self.Neurons[0])-1):
-            self.Neurons[0][i].add(IN[i])
-            outTemp = self.Neurons[0][i].forward()
-            for j in range(len(outTemp)):
+        for i in range(len(self.Neurons[0])-1): #add to the inputs
+            self.Neurons[0][i].add(IN[i]) #add
+            outTemp = self.Neurons[0][i].forward() # run the neurons
+            for j in range(len(outTemp)): # add their outputs to the next layer
                 self.Neurons[1][j].add(outTemp[j])
-        outTemp = self.Neurons[0][-1].forward()
-        for j in range(len(outTemp)):
+        outTemp = self.Neurons[0][-1].forward() #first BIAS
+        for j in range(len(outTemp)): #add the bias output
             self.Neurons[1][j].add(outTemp[j])
         # Hidden
-        for i in range(1, len(self.Neurons)-1):
-            for j in range(len(self.Neurons[i])-1):
-                self.Neurons[i][j].sigf()
-                outTemp = self.Neurons[i][j].forward()
-                for k in range(len(outTemp)):
+        for i in range(1, len(self.Neurons)-1): #run through each hidden layer
+            for j in range(len(self.Neurons[i])-1): #for every neuron in the hidden layer
+                self.Neurons[i][j].sigf() #activation function
+                outTemp = self.Neurons[i][j].forward() #get the output
+                for k in range(len(outTemp)): #add to the next layer
                     self.Neurons[i+1][k].add(outTemp[k])
-            outTemp = self.Neurons[i][-1].forward()
-            for k in range(len(outTemp)):
+            outTemp = self.Neurons[i][-1].forward() #bias
+            for k in range(len(outTemp)): #add the bias
                 self.Neurons[i+1][k].add(outTemp[k])
         # Out
-        out = []
-        for i in range(len(self.Neurons[-1])):
-            self.Neurons[-1][i].sigf()
-            out.append(self.Neurons[-1][i].sum)
+        out = [] #output list creation for final values
+        for i in range(len(self.Neurons[-1])): #get the output of every final neuron
+            self.Neurons[-1][i].sigf() #activation function
+            out.append(self.Neurons[-1][i].sum) #output
         # Return
         # self.printNet()
-        if not isLearn:
-            self.__clean()
-        return out
+        if not isLearn: #not learning will clear the network. if the network is learning, will use the values it just calculated
+            self.__clean() #clean function
+        return out #return the output values
 
     def backprop(self, IN, EOUT, K=0.1):
         if len(EOUT) != self.Size[-1]:
