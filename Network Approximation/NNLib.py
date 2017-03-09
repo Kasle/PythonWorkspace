@@ -46,23 +46,23 @@ class Network: #class definition
             for j in i:
                 print j.Weights, ":", j.sum, j.delta, ":", self.Neurons.index(i), i.index(j) #print everything
 
-    def __createdefault(self, sizes, bias):
-        self.Size = sizes
-        self.Neurons = []
-        for i in range(len(sizes)):
+    def __createdefault(self, sizes, bias): #create a network based on input values
+        self.Size = sizes #network size ie. [1, 2, 1]
+        self.Neurons = [] #empty list for neuron creation
+        for i in range(len(sizes)): #create the neuron array
             self.Neurons.append([])
-        self.Bias = bias
-        for i in range(len(sizes) - 1):
+        self.Bias = bias #set the bias
+        for i in range(len(sizes) - 1): #fill the neuron array
             for j in range(int(sizes[i])):
-                W = []
+                W = [] #empty weight array
                 for k in range(int(sizes[i + 1])):
-                    W.append(random() - 0.5)
-                self.Neurons[i].append(Neuron(W))
-            W = []
-            for k in range(int(sizes[i + 1])):
+                    W.append(random() - 0.5) #append weights for the network
+                self.Neurons[i].append(Neuron(W)) #append a neuron with the created weight array to the layer
+            W = [] #clear the weight list
+            for k in range(int(sizes[i + 1])): #append BIAS to last element of desired layers
                 W.append(random() - 0.5)
-            self.Neurons[i].append(Neuron(W, sum=self.Bias, isBias=True))
-        for i in range(self.Size[-1]):
+            self.Neurons[i].append(Neuron(W, sum=self.Bias, isBias=True)) #special bias creation
+        for i in range(self.Size[-1]): #append output neurons
             self.Neurons[-1].append(Neuron([1]))
 
     def forward(self, IN, isLearn = False):
